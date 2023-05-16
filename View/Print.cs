@@ -22,7 +22,7 @@ namespace View
 
         public static String Green(String message)
         {
-            return message.Pastel(Color.Green);
+            return message.Pastel(Color.LightGreen);
         }
 
         public static String GreenBg(String message)

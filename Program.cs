@@ -40,7 +40,7 @@ class Program
         return $"{rating} | {index} | {subtitle.language} ";
     }
 
-    static void FormatResult(Movie movie, Torrent torrent, Subtitle subtitle)
+    static void ShowResult(Movie movie, Torrent torrent, Subtitle subtitle)
     {
         Console.WriteLine();
 
@@ -61,6 +61,18 @@ class Program
         Console.WriteLine();
 
         Console.WriteLine($"{Txt.CyanBg($" [YTS] Torrent {torrent.quality} ")}: {Txt.Green(torrent.url)}");
+
+        Console.WriteLine();
+
+        Console.WriteLine($"{Txt.CyanBg($" Magnet {torrent.quality} ")}: {Txt.Green(torrent.getMagnetLink()!)}");
+
+        Console.WriteLine();
+
+        Console.WriteLine($"{Txt.White("▬▬▬▬▬ SUBTITLE ▬▬▬▬▬")}");
+
+        Console.WriteLine();
+
+        Console.WriteLine($"{Txt.CyanBg($" Subtitle {subtitle.language} ")}: {Txt.Green(subtitle.downloadLink!)}");
     }
 
     static async Task Main(string[] args)
@@ -85,13 +97,10 @@ class Program
             }
         });
 
-        // get movie
         var movieSelected = Prompt.Select($"Select movie: {movies?.data?.movie_count} results", movies?.data?.movies.Select(FormatMovieOption).ToList());
-
         var movieId = movieSelected.Split(" - ")[1];
         var movieFiltered = movies?.data?.movies.Where(movie => movie.id.ToString() == movieId).ToList().First();
 
-        // get torrent
         var torrentSelected = Prompt.Select("Select torrent", movieFiltered?.torrents.Select(FormatTorrentOption).ToList());
         var torrentIndex = torrentSelected.Split(" | ")[0];
         var torrentFiltered = movieFiltered?.torrents.Where((torrent, index) => index.ToString() == torrentIndex).ToList().First();
@@ -106,12 +115,10 @@ class Program
             }
         });
 
-        // get subtitle
         var subtitleSelected = Prompt.Select("Select subtitle", subtitles.Select(FormatSubtitleOption).ToList());
         var subtitleIndex = subtitleSelected.Split(" | ")[1];
         var subtitleFiltered = subtitles.Where((subtitle, index) => index.ToString() == subtitleIndex).ToList().First();
 
-        //show result
-        FormatResult(movieFiltered!, torrentFiltered!, subtitleFiltered!);
+        ShowResult(movieFiltered!, torrentFiltered!, subtitleFiltered!);
     }
 }
