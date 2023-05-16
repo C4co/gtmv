@@ -6,7 +6,7 @@ using Pastel;
 using Sharprompt;
 using View;
 
-class Program
+class Runner
 {
     static String FormatMovieOption(Movie movie)
     {
@@ -73,9 +73,11 @@ class Program
         Console.WriteLine();
 
         Console.WriteLine($"{Txt.CyanBg($" Subtitle {subtitle.language} ")}: {Txt.Green(subtitle.downloadLink!)}");
+
+        Console.WriteLine();
     }
 
-    static async Task Main(string[] args)
+    static public async Task Run()
     {
         var movieRepository = new MovieRepository();
         var subtitleRepository = new SubtitleRepository();
@@ -88,7 +90,14 @@ class Program
         {
             movies = await movieRepository.Search(query);
 
-            spinner.Text = "Search complete";
+            if (query.Length == 0)
+            {
+                spinner.Text = "Lastests releases";
+            }
+            else
+            {
+                spinner.Text = $"Results for {query}";
+            }
 
             if (movies?.data?.movie_count == 0)
             {
@@ -120,5 +129,13 @@ class Program
         var subtitleFiltered = subtitles.Where((subtitle, index) => index.ToString() == subtitleIndex).ToList().First();
 
         ShowResult(movieFiltered!, torrentFiltered!, subtitleFiltered!);
+    }
+}
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        await Runner.Run();
     }
 }
