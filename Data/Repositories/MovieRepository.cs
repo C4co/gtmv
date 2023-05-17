@@ -25,10 +25,11 @@ public class SearchMovieResponse
 
 public class MovieRepository
 {
-    private static readonly HttpClient _httpClient = new HttpClient();
+    private HttpClient _httpClient;
 
-    public MovieRepository()
+    public MovieRepository(HttpClient httpClient)
     {
+        _httpClient = httpClient;
         _httpClient.BaseAddress = new Uri("https://yts.mx/api/v2/");
     }
 

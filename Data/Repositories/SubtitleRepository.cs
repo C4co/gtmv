@@ -4,7 +4,13 @@ namespace Data.Repositories;
 
 class SubtitleRepository
 {
-    private static HttpClient client = new HttpClient();
+    private HttpClient _client;
+
+    //contructor
+    public SubtitleRepository(HttpClient client)
+    {
+        _client = client;
+    }
 
     public async Task<List<Subtitle>> getSubtitle(String imdbCode)
     {
@@ -12,7 +18,7 @@ class SubtitleRepository
         List<Subtitle> subtitles = new List<Subtitle>();
 
         //get data
-        var response = await client.GetAsync($"https://yts-subs.com/movie-imdb/{imdbCode}");
+        var response = await _client.GetAsync($"https://yts-subs.com/movie-imdb/{imdbCode}");
         response.EnsureSuccessStatusCode();
 
         //reponse body

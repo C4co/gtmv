@@ -60,11 +60,11 @@ class Runner
 
         Console.WriteLine();
 
-        Console.WriteLine($"{Txt.CyanBg($" [YTS] Torrent {torrent.quality} ")}: {Txt.Green(torrent.url)}");
+        Console.WriteLine($"{Txt.CyanBg($" [YTS] Torrent file {torrent.quality} ")}: {Txt.Green(torrent.url)}");
 
         Console.WriteLine();
 
-        Console.WriteLine($"{Txt.CyanBg($" Magnet {torrent.quality} ")}: {Txt.Green(torrent.getMagnetLink()!)}");
+        Console.WriteLine($"{Txt.CyanBg($" Magnet link {torrent.quality} ")}: {Txt.Green(torrent.getMagnetLink()!)}");
 
         Console.WriteLine();
 
@@ -79,9 +79,13 @@ class Runner
 
     static public async Task Run()
     {
-        var movieRepository = new MovieRepository();
-        var subtitleRepository = new SubtitleRepository();
+        HttpClient httpClient = new HttpClient();
+
+        var movieRepository = new MovieRepository(httpClient);
+        var subtitleRepository = new SubtitleRepository(httpClient);
+
         SearchMovieResponse? movies = null;
+
         List<Subtitle> subtitles = new List<Subtitle>();
 
         var query = Prompt.Input<string>("Search movie");
@@ -136,6 +140,17 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        await Runner.Run();
+        //run while exit
+        while (true)
+        {
+            await Runner.Run();
+
+            var option = Prompt.Select("Want to search for another movie?", new List<string> { "Yes", "No" });
+
+            if (option == "No")
+            {
+                Environment.Exit(0);
+            }
+        }
     }
 }
