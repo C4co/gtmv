@@ -140,7 +140,6 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        //run while exit
         while (true)
         {
             await Runner.Run();
