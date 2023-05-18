@@ -40,7 +40,8 @@ class Runner
         return $"{rating} | {index} | {subtitle.language} ";
     }
 
-    static void ShowResult(Movie movie, Torrent torrent, Subtitle subtitle)
+    //show just movie result
+    static void ShowMovieResult(Movie movie)
     {
         Console.WriteLine();
 
@@ -55,7 +56,10 @@ class Runner
         Console.WriteLine($"Trailer: {Txt.Green("https://www.youtube.com/watch?v=" + movie.yt_trailer_code)}");
 
         Console.WriteLine();
+    }
 
+    static void ShowTorrentResult(Torrent torrent)
+    {
         Console.WriteLine($"{Txt.White("▬▬▬▬▬ TORRENT ▬▬▬▬▬")}");
 
         Console.WriteLine();
@@ -67,7 +71,11 @@ class Runner
         Console.WriteLine($"{Txt.CyanBg($" Magnet link {torrent.quality} ")}: {Txt.Green(torrent.getMagnetLink()!)}");
 
         Console.WriteLine();
+    }
 
+
+    static void ShowSubtitleResult(Subtitle subtitle)
+    {
         Console.WriteLine($"{Txt.White("▬▬▬▬▬ SUBTITLE ▬▬▬▬▬")}");
 
         Console.WriteLine();
@@ -80,35 +88,33 @@ class Runner
     static public async Task Run()
     {
         HttpClient httpClient = new HttpClient();
-
         var movieRepository = new MovieRepository(httpClient);
         var subtitleRepository = new SubtitleRepository(httpClient);
-
         SearchMovieResponse? movies = null;
-
         List<Subtitle> subtitles = new List<Subtitle>();
+        bool foundMovie = false;
 
-        var query = Prompt.Input<string>("Search movie");
-
-        await Spinner.StartAsync("Searching...", async (spinner) =>
+        while (!foundMovie)
         {
-            movies = await movieRepository.Search(query);
+            var query = Prompt.Input<string>("Search movie", validators: new[] {
+                Validators.Required("Movie is required")
+            });
 
-            if (query.Length == 0)
+            await Spinner.StartAsync("Searching...", async (spinner) =>
             {
-                spinner.Text = "Lastests releases";
-            }
-            else
-            {
-                spinner.Text = $"Results for {query}";
-            }
+                movies = await movieRepository.Search(query);
 
-            if (movies?.data?.movie_count == 0)
-            {
-                spinner.Fail("No results found");
-                Environment.Exit(0);
-            }
-        });
+                if (movies?.data?.movie_count == 0)
+                {
+                    spinner.Fail("No results found, try again");
+                }
+                else
+                {
+                    foundMovie = true;
+                    spinner.Text = $"Results for {query}";
+                }
+            });
+        }
 
         var movieSelected = Prompt.Select($"Select movie: {movies?.data?.movie_count} results", movies?.data?.movies.Select(FormatMovieOption).ToList());
         var movieId = movieSelected.Split(" - ")[1];
@@ -120,19 +126,30 @@ class Runner
 
         await Spinner.StartAsync("Searching subtitle...", async (spinner) =>
         {
-            subtitles = await subtitleRepository.getSubtitle(movieFiltered?.imdb_code!);
-
-            if (subtitles.Count == 0)
+            try
+            {
+                subtitles = await subtitleRepository.getSubtitle(movieFiltered?.imdb_code!);
+            }
+            catch (System.Net.Http.HttpRequestException)
             {
                 spinner.Fail("No subtitles found");
             }
         });
 
-        var subtitleSelected = Prompt.Select("Select subtitle", subtitles.Select(FormatSubtitleOption).ToList());
-        var subtitleIndex = subtitleSelected.Split(" | ")[1];
-        var subtitleFiltered = subtitles.Where((subtitle, index) => index.ToString() == subtitleIndex).ToList().First();
-
-        ShowResult(movieFiltered!, torrentFiltered!, subtitleFiltered!);
+        if (subtitles.Count != 0)
+        {
+            var subtitleSelected = Prompt.Select("Select subtitle", subtitles.Select(FormatSubtitleOption).ToList());
+            var subtitleIndex = subtitleSelected.Split(" | ")[1];
+            var subtitleFiltered = subtitles.Where((subtitle, index) => index.ToString() == subtitleIndex).ToList().First();
+            ShowMovieResult(movieFiltered!);
+            ShowTorrentResult(torrentFiltered!);
+            ShowSubtitleResult(subtitleFiltered!);
+        }
+        else
+        {
+            ShowMovieResult(movieFiltered!);
+            ShowTorrentResult(torrentFiltered!);
+        }
     }
 }
 
@@ -143,7 +160,6 @@ class Program
         while (true)
         {
             await Runner.Run();
-
             var option = Prompt.Select("Want to search for another movie?", new List<string> { "Yes", "No" });
 
             if (option == "No")
