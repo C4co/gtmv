@@ -2,6 +2,8 @@
 
 >get movie torrents from YTS
 
+![exmaple](/screenshot.png)
+
 ### Run
 
 ```
