@@ -38,8 +38,6 @@ public class MovieRepository
         var response = await _httpClient.GetAsync($"list_movies.json?query_term={query}&limit=50&sort_by=year");
         var content = await response.Content.ReadAsStringAsync();
 
-        var res = JsonSerializer.Deserialize<SearchMovieResponse>(content);
-
-        return res!;
+        return JsonSerializer.Deserialize<SearchMovieResponse>(content)!;
     }
 }

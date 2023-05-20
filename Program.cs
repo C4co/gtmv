@@ -82,7 +82,7 @@ class Runner
         HttpClient httpClient = new HttpClient();
         var movieRepository = new MovieRepository(httpClient);
         var subtitleRepository = new SubtitleRepository(httpClient);
-        SearchMovieResponse? movies = null;
+        SearchMovieResponse? response = null;
         List<Subtitle> subtitles = new List<Subtitle>();
         bool foundMovie = false;
 
@@ -94,9 +94,9 @@ class Runner
 
             await Spinner.StartAsync("Searching...", async (spinner) =>
             {
-                movies = await movieRepository.Search(query);
+                response = await movieRepository.Search(query);
 
-                if (movies?.data?.movie_count == 0)
+                if (response?.data?.movie_count == 0)
                 {
                     spinner.Fail("No results found, try again");
                 }
@@ -108,9 +108,9 @@ class Runner
             });
         }
 
-        var movieSelected = Prompt.Select($"Select movie: {movies?.data?.movie_count} results", movies?.data?.movies.Select(Formater.FormatMovieOption).ToList());
+        var movieSelected = Prompt.Select($"Select movie: {response?.data?.movie_count} results", response?.data?.movies.Select(Formater.FormatMovieOption).ToList());
         var movieId = movieSelected.Split(" - ")[1];
-        var movieFiltered = movies?.data?.movies.Where(movie => movie.id.ToString() == movieId).ToList().First();
+        var movieFiltered = response?.data?.movies.Where(movie => movie.id.ToString() == movieId).ToList().First();
 
         var torrentSelected = Prompt.Select("Select torrent", movieFiltered?.torrents.Select(Formater.FormatTorrentOption).ToList());
         var torrentIndex = torrentSelected.Split(" | ")[0];
