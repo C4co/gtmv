@@ -1,9 +1,15 @@
 ﻿using System.Drawing;
+
 using Data.Repositories;
+
 using Domain.Entities;
+
 using Kurukuru;
+
 using Pastel;
+
 using Sharprompt;
+
 using View;
 
 class Formater

@@ -32,5 +32,4 @@ public class Torrent
 
         return String.Join("&", magnetLink);
     }
-
 }

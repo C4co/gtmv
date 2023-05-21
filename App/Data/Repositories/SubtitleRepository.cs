@@ -4,13 +4,13 @@ using Domain.Entities;
 
 using HtmlAgilityPack;
 
-class SubtitleRepository
+public class SubtitleRepository
 {
     private HttpClient _client;
 
-    public SubtitleRepository(HttpClient client)
+    public SubtitleRepository(HttpClient httpClient)
     {
-        _client = client;
+        _client = httpClient;
     }
 
     public async Task<List<Subtitle>> getSubtitle(String imdbCode)
@@ -39,11 +39,12 @@ class SubtitleRepository
             var label = item.SelectSingleNode(".//td[@class='rating-cell']");
 
             subtitles.Add(
-                new Subtitle(
-                    lang.InnerText,
-                    formatedLink,
-                    label.InnerText.Trim()
-                )
+                new Subtitle
+                {
+                    language = lang.InnerText,
+                    downloadLink = formatedLink,
+                    rating = label.InnerText.Trim()
+                }
             );
         }
 
