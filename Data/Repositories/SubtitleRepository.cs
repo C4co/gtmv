@@ -1,6 +1,8 @@
-using Domain.Entities;
-using HtmlAgilityPack;
 namespace Data.Repositories;
+
+using Domain.Entities;
+
+using HtmlAgilityPack;
 
 class SubtitleRepository
 {

@@ -1,7 +1,8 @@
-using System.Text.Json;
-using Domain.Entities;
-
 namespace Data.Repositories;
+
+using System.Text.Json;
+
+using Domain.Entities;
 
 public class SearchResponseData
 {
