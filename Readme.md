@@ -7,7 +7,12 @@
 ### Run
 
 ```
-dotnet run
+dotnet run --project App
+```
+### Test
+
+```
+dotnet test
 ```
 
 ---
