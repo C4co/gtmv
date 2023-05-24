@@ -12,7 +12,6 @@
     <PackageReference Include="Kurukuru" Version="1.4.2" />
     <PackageReference Include="Pastel" Version="4.1.0" />
     <PackageReference Include="Sharprompt" Version="2.4.5" />
-    <PackageReference Include="Terminal.Gui" Version="1.*" />
   </ItemGroup>
 
 </Project>
