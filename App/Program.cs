@@ -30,7 +30,7 @@ class Formater
     public static String FormatSubtitleOption(Subtitle subtitle, int index)
     {
         var colorRating = Color.Black;
-        var bakcgroundColorRating = Color.White;
+        var bakcgroundColorRating = Color.Yellow;
 
         if (int.Parse(subtitle.rating!) > 0)
         {
@@ -41,7 +41,7 @@ class Formater
             bakcgroundColorRating = Color.Red;
         }
 
-        String rating = $" ♥ {subtitle.rating} ".Pastel(colorRating).PastelBg(bakcgroundColorRating);
+        String rating = $" {subtitle.rating} ".Pastel(colorRating).PastelBg(bakcgroundColorRating);
 
         return $"{rating} | {index} | {subtitle.language}";
     }
@@ -158,12 +158,6 @@ class Program
         while (true)
         {
             await Runner.Run();
-            var option = Prompt.Select("Want to search for another movie?", new List<string> { "Yes", "No" });
-
-            if (option == "No")
-            {
-                Environment.Exit(0);
-            }
         }
     }
 }
