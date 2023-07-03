@@ -7,7 +7,7 @@ namespace View
         public static void ShowMovieResult(Movie movie)
         {
             Console.WriteLine();
-            Console.WriteLine($"{Txt.White("▬▬▬▬▬ MOVIE ▬▬▬▬▬")}");
+            Console.WriteLine($"{Txt.White("----- MOVIE -----")}");
             Console.WriteLine();
             Console.WriteLine($"{Txt.Yellow(movie.year.ToString())} - {Txt.Cyan(movie.title)}");
             Console.WriteLine($"Genres: {Txt.Green(String.Join(", ", movie.genres))}");
@@ -19,7 +19,7 @@ namespace View
 
         public static void ShowTorrentResult(Torrent torrent)
         {
-            Console.WriteLine($"{Txt.White("▬▬▬▬▬ TORRENT ▬▬▬▬▬")}");
+            Console.WriteLine($"{Txt.White("----- TORRENT -----")}");
             Console.WriteLine();
             Console.WriteLine($"{Txt.CyanBg($" [YTS] Torrent file {torrent.quality} ")}: {Txt.Green(torrent.url)}");
             Console.WriteLine();
@@ -29,7 +29,7 @@ namespace View
 
         public static void ShowSubtitleResult(Subtitle subtitle)
         {
-            Console.WriteLine($"{Txt.White("▬▬▬▬▬ SUBTITLE ▬▬▬▬▬")}");
+            Console.WriteLine($"{Txt.White("----- SUBTITLE -----")}");
             Console.WriteLine();
             Console.WriteLine($"{Txt.CyanBg($" Subtitle {subtitle.language} ")}: {Txt.Green(subtitle.downloadLink!)}");
             Console.WriteLine();
