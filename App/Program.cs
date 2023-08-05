@@ -12,11 +12,11 @@ class Runner
 {
     static public async Task Run()
     {
-        HttpClient httpClient = new HttpClient();
+        HttpClient httpClient = new();
         var movieRepository = new MovieRepository(httpClient);
         var subtitleRepository = new SubtitleRepository(httpClient);
         SearchMovieResponse? response = null;
-        List<Subtitle> subtitles = new List<Subtitle>();
+        List<Subtitle> subtitles = new();
         bool foundMovie = false;
 
         while (!foundMovie)
@@ -29,7 +29,7 @@ class Runner
             {
                 response = await movieRepository.Search(query);
 
-                if (response?.data?.movie_count == 0)
+                if (response?.Data?.MovieCount == 0)
                 {
                     spinner.Fail("No results found, try again");
                 }
@@ -41,21 +41,21 @@ class Runner
             });
         }
 
-        var movieSelected = Prompt.Select($"Select movie: {response?.data?.movie_count} results", response?.data?.movies.Select(Formater.FormatMovieOption).ToList());
+        var movieSelected = Prompt.Select($"Select movie: {response?.Data?.MovieCount} results", response?.Data?.Movies.Select(Formater.FormatMovieOption).ToList());
         var movieId = movieSelected.Split(" - ")[1];
-        var movieFiltered = response?.data?.movies.Where(movie => movie.id.ToString() == movieId).ToList().First();
+        var movieFiltered = response?.Data?.Movies.Where(movie => movie.Id.ToString() == movieId).ToList().First();
 
-        var torrentSelected = Prompt.Select("Select torrent", movieFiltered?.torrents.Select(Formater.FormatTorrentOption).ToList());
+        var torrentSelected = Prompt.Select("Select torrent", movieFiltered?.Torrents.Select(Formater.FormatTorrentOption).ToList());
         var torrentIndex = torrentSelected.Split(" | ")[0];
-        var torrentFiltered = movieFiltered?.torrents.Where((torrent, index) => index.ToString() == torrentIndex).ToList().First();
+        var torrentFiltered = movieFiltered?.Torrents.Where((torrent, index) => index.ToString() == torrentIndex).ToList().First();
 
         await Spinner.StartAsync("Searching subtitle...", async (spinner) =>
         {
             try
             {
-                subtitles = await subtitleRepository.getSubtitle(movieFiltered?.imdb_code!);
+                subtitles = await subtitleRepository.GetSubtitle(movieFiltered?.ImdbCode!);
             }
-            catch (System.Net.Http.HttpRequestException)
+            catch (HttpRequestException)
             {
                 spinner.Fail("No subtitles found");
             }
@@ -80,7 +80,7 @@ class Runner
 
 class Program
 {
-    static async Task Main(string[] args)
+    static async Task Main()
     {
         while (true)
         {

@@ -6,27 +6,27 @@ namespace Data.Repositories
 {
     public class SearchResponseData
     {
-        public int? movie_count { get; set; } = null!;
+        public int? MovieCount { get; set; } = null!;
 
-        public int? limit { get; set; } = null!;
+        public int? Limit { get; set; } = null!;
 
-        public int? page_number { get; set; } = null!;
+        public int? PageNumber { get; set; } = null!;
 
-        public List<Movie> movies { get; set; } = null!;
+        public List<Movie> Movies { get; set; } = null!;
     }
 
     public class SearchMovieResponse
     {
-        public string? status { get; set; }
+        public string? Status { get; set; }
 
-        public string? status_message { get; set; }
+        public string? StatusMessage { get; set; }
 
-        public SearchResponseData? data { get; set; } = null!;
+        public SearchResponseData? Data { get; set; } = null!;
     }
 
     public class MovieRepository
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public MovieRepository(HttpClient httpClient)
         {
@@ -39,7 +39,12 @@ namespace Data.Repositories
             var response = await _httpClient.GetAsync($"list_movies.json?query_term={query}&limit=50&sort_by=year");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<SearchMovieResponse>(content)!;
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return JsonSerializer.Deserialize<SearchMovieResponse>(content, options)!;
         }
     }
 }

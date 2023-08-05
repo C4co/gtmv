@@ -8,36 +8,36 @@ namespace View
 {
     class Formater
     {
-        public static String FormatMovieOption(Movie movie)
+        public static string FormatMovieOption(Movie movie)
         {
-            return $"{Txt.Yellow(movie.year.ToString())} | {Txt.Cyan(movie.title)} - {movie.id}";
+            return $"{Txt.Yellow(movie.Year.ToString())} | {Txt.Cyan(movie.Title)} - {movie.Id}";
         }
 
-        public static String FormatTorrentOption(Torrent torrent, int index)
+        public static string FormatTorrentOption(Torrent torrent, int index)
         {
-            String title = $"[YTS] Torrent {torrent.quality}";
-            String seedPeers = $"Seeds: {torrent.seeds} - Peers: {torrent.peers}";
+            string title = $"[YTS] Torrent {torrent.Quality}";
+            string seedPeers = $"Seeds: {torrent.Seeds} - Peers: {torrent.Peers}";
 
-            return $"{index} | {Txt.Cyan(title)} | {torrent.size} - {torrent.type} | {Txt.Yellow(seedPeers)}";
+            return $"{index} | {Txt.Cyan(title)} | {torrent.Size} - {torrent.Type} | {Txt.Yellow(seedPeers)}";
         }
 
-        public static String FormatSubtitleOption(Subtitle subtitle, int index)
+        public static string FormatSubtitleOption(Subtitle subtitle, int index)
         {
             var colorRating = Color.Black;
             var bakcgroundColorRating = Color.Yellow;
 
-            if (int.Parse(subtitle.rating!) > 0)
+            if (int.Parse(subtitle.Rating!) > 0)
             {
                 bakcgroundColorRating = Color.Green;
             }
-            else if (int.Parse(subtitle.rating!) < 0)
+            else if (int.Parse(subtitle.Rating!) < 0)
             {
                 bakcgroundColorRating = Color.Red;
             }
 
-            String rating = $" {subtitle.rating} ".Pastel(colorRating).PastelBg(bakcgroundColorRating);
+            string rating = $" {subtitle.Rating} ".Pastel(colorRating).PastelBg(bakcgroundColorRating);
 
-            return $"{rating} | {index} | {subtitle.language}";
+            return $"{rating} | {index} | {subtitle.Language}";
         }
     }
 }

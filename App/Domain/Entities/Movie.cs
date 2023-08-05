@@ -1,23 +1,36 @@
+using System.Text.Json.Serialization;
+
 namespace Domain.Entities
 {
     public class Movie
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string title { get; set; } = null!;
+        public string Title { get; set; } = null!;
 
-        public string language { get; set; } = null!;
+        public string Language { get; set; } = null!;
 
-        public int year { get; set; }
+        public int Year { get; set; }
 
-        public List<string> genres { get; set; } = null!;
+        public List<string> Genres { get; set; } = null!;
 
-        public string yt_trailer_code { get; set; } = null!;
+        [JsonPropertyName("yt_trailer_code")]
+        public string YtTrailerCode { get; set; } = null!;
 
-        public string? large_cover_image { get; set; }
+        [JsonPropertyName("large_cover_image")]
+        public string? LargeCoverImage { get; set; }
 
-        public List<Torrent> torrents { get; set; } = null!;
+        public List<Torrent> Torrents { get; set; } = null!;
 
-        public string imdb_code { get; set; } = null!;
+        [JsonPropertyName("imdb_code")]
+        public string ImdbCode { get; set; } = null!;
+
+        public override string ToString()
+        {
+            return $"Id: {Id}\nTitle: {Title}\nLanguage: {Language}\nYear: {Year}\nGenres: {string.Join(", ", Genres)}\nYtTrailerCode: {YtTrailerCode}\nLargeCoverImage: {LargeCoverImage}\nTorrents: {string.Join(", ", Torrents)}\nImdbCode: {ImdbCode}";
+        }
     }
+
 }
+
+

@@ -6,23 +6,23 @@ namespace Data.Repositories
 {
     public class SubtitleRepository
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         public SubtitleRepository(HttpClient httpClient)
         {
             _client = httpClient;
         }
 
-        public async Task<List<Subtitle>> getSubtitle(String imdbCode)
+        public async Task<List<Subtitle>> GetSubtitle(string imdbCode)
         {
-            List<Subtitle> subtitles = new List<Subtitle>();
+            List<Subtitle> subtitles = new();
 
             var response = await _client.GetAsync($"https://yts-subs.com/movie-imdb/{imdbCode}");
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            HtmlDocument htmlDoc = new HtmlDocument();
+            HtmlDocument htmlDoc = new();
 
             htmlDoc.LoadHtml(responseBody);
 
@@ -41,9 +41,9 @@ namespace Data.Repositories
                 subtitles.Add(
                     new Subtitle
                     {
-                        language = lang.InnerText,
-                        downloadLink = formatedLink,
-                        rating = label.InnerText.Trim()
+                        Language = lang.InnerText,
+                        DownloadLink = formatedLink,
+                        Rating = label.InnerText.Trim()
                     }
                 );
             }

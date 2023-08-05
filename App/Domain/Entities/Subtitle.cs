@@ -2,13 +2,13 @@ namespace Domain.Entities
 {
     public class Subtitle
     {
-        public string? language { get; set; }
-        public string? downloadLink { get; set; }
-        public string? rating { get; set; }
+        public string? Language { get; set; }
+        public string? DownloadLink { get; set; }
+        public string? Rating { get; set; }
 
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{rating} - {language} - {downloadLink}";
+            return $"{Rating} - {Language} - {DownloadLink}";
         }
     }
 }

@@ -4,34 +4,32 @@ using System.Threading.Tasks;
 
 using Data.Repositories;
 
-using Domain.Entities;
-
 [TestClass]
 public class Repositories
 {
     [TestMethod]
     public async Task MovieRepositoryAsync()
     {
-        MovieRepository movieRepository = new MovieRepository(
+        MovieRepository movieRepository = new(
             httpClient: new HttpClient()
         );
 
         var reponse = await movieRepository.Search("batman");
 
-        Assert.IsTrue(reponse.data?.movies.Count > 0);
-        Assert.IsTrue(reponse.data?.movies[0] is Movie);
+        Assert.IsTrue(reponse.Data?.Movies.Count > 0);
+        Assert.IsTrue(reponse.Data?.Movies[0] is not null);
     }
 
     [TestMethod]
     public async Task SubtitleRepositoryAsync()
     {
-        SubtitleRepository subtitleRepository = new SubtitleRepository(
+        SubtitleRepository subtitleRepository = new(
             httpClient: new HttpClient()
         );
 
-        var Subtitles = await subtitleRepository.getSubtitle("tt0372784");
+        var subtitles = await subtitleRepository.GetSubtitle("tt0372784");
 
-        Assert.IsTrue(Subtitles.Count > 0);
-        Assert.IsTrue(Subtitles[0] is Subtitle);
+        Assert.IsTrue(subtitles.Count > 0);
+        Assert.IsTrue(subtitles[0] is not null);
     }
 }
