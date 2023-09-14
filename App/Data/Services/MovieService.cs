@@ -2,7 +2,7 @@ using System.Text.Json;
 
 using Domain.Entities;
 
-namespace Data.Repositories
+namespace Data.Services
 {
     public class SearchResponseData
     {
@@ -24,11 +24,11 @@ namespace Data.Repositories
         public SearchResponseData? Data { get; set; } = null!;
     }
 
-    public class MovieRepository
+    public class MovieService
     {
         private readonly HttpClient _httpClient;
 
-        public MovieRepository(HttpClient httpClient)
+        public MovieService(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://yts.mx/api/v2/");
