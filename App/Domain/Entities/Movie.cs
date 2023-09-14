@@ -27,7 +27,15 @@ namespace Domain.Entities
 
         public override string ToString()
         {
-            return $"Id: {Id}\nTitle: {Title}\nLanguage: {Language}\nYear: {Year}\nGenres: {string.Join(", ", Genres)}\nYtTrailerCode: {YtTrailerCode}\nLargeCoverImage: {LargeCoverImage}\nTorrents: {string.Join(", ", Torrents)}\nImdbCode: {ImdbCode}";
+            return $@"Id: {Id}
+                    Title: {Title}
+                    Language: {Language}
+                    Year: {Year}
+                    Genres: {string.Join(", ", Genres)}
+                    YtTrailerCode: {YtTrailerCode}
+                    LargeCoverImage: {LargeCoverImage}
+                    Torrents: {string.Join(", ", Torrents)}
+                    ImdbCode: {ImdbCode}";
         }
     }
 
