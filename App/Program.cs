@@ -1,4 +1,4 @@
-﻿using Data.Repositories;
+﻿using Data.Services;
 
 using Domain.Entities;
 
@@ -13,8 +13,8 @@ class Runner
     static public async Task Run()
     {
         HttpClient httpClient = new();
-        var movieRepository = new MovieRepository(httpClient);
-        var subtitleRepository = new SubtitleRepository(httpClient);
+        var movieService = new MovieService(httpClient);
+        var subtitleService = new SubtitleService(httpClient);
         SearchMovieResponse? response = null;
         List<Subtitle> subtitles = new();
         bool foundMovie = false;
@@ -27,7 +27,7 @@ class Runner
 
             await Spinner.StartAsync("Searching...", async (spinner) =>
             {
-                response = await movieRepository.Search(query);
+                response = await movieService.Search(query);
 
                 if (response?.Data?.MovieCount == 0)
                 {
@@ -53,7 +53,7 @@ class Runner
         {
             try
             {
-                subtitles = await subtitleRepository.GetSubtitle(movieFiltered?.ImdbCode!);
+                subtitles = await subtitleService.GetSubtitle(movieFiltered?.ImdbCode!);
             }
             catch (HttpRequestException)
             {

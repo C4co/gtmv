@@ -2,13 +2,13 @@ using Domain.Entities;
 
 using HtmlAgilityPack;
 
-namespace Data.Repositories
+namespace Data.Services
 {
-    public class SubtitleRepository
+    public class SubtitleService
     {
         private readonly HttpClient _client;
 
-        public SubtitleRepository(HttpClient httpClient)
+        public SubtitleService(HttpClient httpClient)
         {
             _client = httpClient;
         }

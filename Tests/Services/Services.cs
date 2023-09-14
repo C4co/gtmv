@@ -2,32 +2,32 @@ namespace Tests;
 
 using System.Threading.Tasks;
 
-using Data.Repositories;
+using Data.Services;
 
 [TestClass]
-public class Repositories
+public class Services
 {
     [TestMethod]
-    public async Task MovieRepositoryAsync()
+    public async Task MovieServiceAsync()
     {
-        MovieRepository movieRepository = new(
+        MovieService movieService = new(
             httpClient: new HttpClient()
         );
 
-        var reponse = await movieRepository.Search("batman");
+        var reponse = await movieService.Search("batman");
 
         Assert.IsTrue(reponse.Data?.Movies.Count > 0);
         Assert.IsTrue(reponse.Data?.Movies[0] is not null);
     }
 
     [TestMethod]
-    public async Task SubtitleRepositoryAsync()
+    public async Task SubtitleServiceAsync()
     {
-        SubtitleRepository subtitleRepository = new(
+        SubtitleService subtitleService = new(
             httpClient: new HttpClient()
         );
 
-        var subtitles = await subtitleRepository.GetSubtitle("tt0372784");
+        var subtitles = await subtitleService.GetSubtitle("tt0372784");
 
         Assert.IsTrue(subtitles.Count > 0);
         Assert.IsTrue(subtitles[0] is not null);
