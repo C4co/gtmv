@@ -84,7 +84,14 @@ class Program
     {
         while (true)
         {
-            await Runner.Run();
+            try
+            {
+                await Runner.Run();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Movie not found, try again");
+            }
         }
     }
 }
